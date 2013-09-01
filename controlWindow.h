@@ -87,9 +87,9 @@ public:
 	//cre = -1.991965715937304; cim = 0.0; scale = 8192.0;
 	
 	// very good test for finding random points
-	//cre = -0.402435063612580;
-	//cim = 0.602973178150621;
-	//scale = 2157234.45378;
+    //cre = -0.402435063612580;
+    //cim = 0.602973178150621;
+    //scale = 2157234.45378;
 	
 	
 	QWidget *centralWidget;
@@ -148,24 +148,24 @@ public:
 	
 	bool valuesChanged( );
 	static int expVal ( int x ) { return (int) pow( 2.0, x / 2.0 ); }
-        double getCre( ) { return cre; }
-        double getCim( ) { return cim; }
-        double getScale( ) { return scale; }
+    double getCre( ) { return cre; }
+    double getCim( ) { return cim; }
+    double getScale( ) { return scale; }
 	void modelToGUI ( );
 
 public slots:
 	void handleStartButton( );
-        void handleResetButton( );
-        void renderWinClosed( );
+    void handleResetButton( );
+    void renderWinClosed( );
 	void exit( );
 
-        void setMinRIteration(int value);
-        void setMinGIteration(int value);
-        void setMinBIteration(int value);
+    void setMinRIteration(int value);
+    void setMinGIteration(int value);
+    void setMinBIteration(int value);
 
-        void setMaxRIteration(int value);
-        void setMaxGIteration(int value);
-        void setMaxBIteration(int value);
+    void setMaxRIteration(int value);
+    void setMaxGIteration(int value);
+    void setMaxBIteration(int value);
 
 	void setLightness( int value );
 	void setContrast( int value );

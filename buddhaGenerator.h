@@ -71,13 +71,10 @@ public:
 	void drawPoint ( buddha::complex& c, bool r, bool g, bool b );
 	int inside ( buddha::complex& c );
 	int evaluate ( buddha::complex& begin, double& distance, unsigned int& contribute, unsigned int& calculated );
-
 	int findPoint ( buddha::complex& begin, double& centerDistance, unsigned int& contribute, unsigned int& calculated );
 
 	//int normal();
 	int metropolis();
-	
-	
 	
 	
 	

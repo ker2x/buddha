@@ -16,16 +16,14 @@ HEADERS += buddha.h \
 	   controlWindow.h \
 	   renderWindow.h \
 	   staticStuff.h \
-	   random.h \
-           demoWindow.h
+	   random.h
 #    option.h
 SOURCES += buddha.cpp \
 	   buddhaGenerator.cpp \
 	   controlWindow.cpp \
 	   main.cpp \
 	   renderWindow.cpp \
-	   staticStuff.cpp \
-    demoWindow.cpp
+	   staticStuff.cpp
 #    option.cpp
 #LIBS += -lboost_program_options -s
 #LIBS += -L./opencl/lib -lOpenCL
@@ -43,7 +41,7 @@ SOURCES += buddha.cpp \
 
 #print in macro FLAGS the CFLAGS variable of the Makefile, cleaning it from the defines -D.
 #I would say that this is a nice hack.
-QMAKE_CXXFLAGS += -DFLAGS=\"`echo "$(CFLAGS)" | sed \'s/-D[^ ]*//g\' | sed \'s/[ ][ ]*/ /g\'`\"
+#QMAKE_CXXFLAGS += -DFLAGS=\"`echo "$(CFLAGS)" | sed \'s/-D[^ ]*//g\' | sed \'s/[ ][ ]*/ /g\'`\"
 
 
 # to enable additional optimizations

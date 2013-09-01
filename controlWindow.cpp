@@ -241,7 +241,7 @@ void ControlWindow::createGraphBox ( ) {
 
 void ControlWindow::createRenderBox ( ) {
 
-    lightness = 100;
+    lightness = 50;
     contrast = 100;
     fps = 2;
 	renderBox = new QGroupBox( "Render quality", this );

@@ -46,20 +46,8 @@
 #include "complex.h"
 #include "staticStuff.h"
 
-#ifdef _WIN32
-#define QTOPENCL	0
-#else
-#define QTOPENCL	0
-#endif
-
-
-#if QTOPENCL
-#include "qclcontext.h"
-#endif
 
 using namespace std;
-
-
 
 enum CurrentStatus { PAUSE, STOP, RUN };
 
@@ -71,22 +59,14 @@ class BuddhaGenerator;
 
 class Buddha : public QThread {
 	Q_OBJECT
-	
-	
-#if QTOPENCL
-	QCLContext context;
-	QCLProgram program;
-	QCLKernel convert;
-	QCLImage2D srcImageBuffer;
-	QCLImage2D dstImageBuffer;
-#endif
-	
+		
 	int threads;
 	vector<BuddhaGenerator*> generators;
 	CurrentStatus generatorsStatus;
 	
 	//void preprocessImage ( );
 	void createImage ( );
+
 public:	
 	// for the communication with the GUI XXX maibe it can be removed
 	QMutex mutex;
@@ -100,20 +80,14 @@ public:
 	double maxre, maxim;
 	double minre, minim;
 	double cre, cim;
-        unsigned int low;
-        unsigned int lowr;
-        unsigned int lowg;
-        unsigned int lowb;
-	unsigned int high;
-	unsigned int highr;
-	unsigned int highg;
-	unsigned int highb;
+    unsigned int low, high;
+    unsigned int lowr, lowg, lowb;
+    unsigned int highr, highg, highb;
 	double scale;
 
 	// these can be calculated from the previous but they are useful
 	double rangere, rangeim;
-	unsigned int w;
-	unsigned int h;
+    unsigned int w, h;
 	unsigned int size;
 	
 	
@@ -124,19 +98,14 @@ public:
 	int contrast, lightness;
 	unsigned int maxr, minr, maxb, minb, maxg, ming;
 	
-
-
-
-	
-
-
-
+    // Constructor & Destructor
 	Buddha ( QObject *parent = 0 );
 	~Buddha ( );
 
-	void reduceStep ( int i, bool check );
+    void reduceStep ( int i, bool check );
 	void reduce ( );
 	void run( );
+
 signals:
 	void imageCreated( );
 	void stoppedGenerators( bool);
@@ -149,7 +118,7 @@ public slots:
 	void updateRGBImage( );
 	void pauseGenerators( );
 	void resumeGenerators( );
-        void set( double cre, double cim, double scale, uint lr, uint lg, uint lb, uint hr, uint hg, uint hb, QSize wsize, bool pause );
+    void set( double cre, double cim, double scale, uint lr, uint lg, uint lb, uint hr, uint hg, uint hb, QSize wsize, bool pause );
 	void clearBuffers ( );
 	void resizeBuffers ( );
 	void resizeSequences ( );
