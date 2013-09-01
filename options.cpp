@@ -1,12 +1,12 @@
 #include "options.h"
 #include "controlWindow.h"
-#include <boost/property_tree/ptree.hpp>
-#include <boost/property_tree/xml_parser.hpp>
-#include <boost/any.hpp>
+//#include <boost/property_tree/ptree.hpp>
+//#include <boost/property_tree/xml_parser.hpp>
+//#include <boost/any.hpp>
 #include <sstream>
 #include <iostream>
-namespace po = boost::program_options;
-using boost::property_tree::ptree;
+//namespace po = boost::program_options;
+//using boost::property_tree::ptree;
 using namespace std;
 
 

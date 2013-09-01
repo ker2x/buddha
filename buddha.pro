@@ -7,6 +7,8 @@ TARGET = buddha.run
 DEPENDPATH += .
 INCLUDEPATH += .
 
+QT +=widgets
+
 # Input
 HEADERS += buddha.h \
 	   buddhaGenerator.h \
@@ -15,19 +17,17 @@ HEADERS += buddha.h \
 	   renderWindow.h \
 	   staticStuff.h \
 	   random.h \
-	   demoWindow.h \
-    options.h \
-    option.h
+           demoWindow.h
+#    option.h
 SOURCES += buddha.cpp \
 	   buddhaGenerator.cpp \
 	   controlWindow.cpp \
 	   main.cpp \
 	   renderWindow.cpp \
 	   staticStuff.cpp \
-    demoWindow.cpp \
-    options.cpp \
-    option.cpp
-LIBS += -lboost_program_options -s
+    demoWindow.cpp
+#    option.cpp
+#LIBS += -lboost_program_options -s
 #LIBS += -L./opencl/lib -lOpenCL
 #include(./opencl/src/opencl/opencl_dep.pri)
 

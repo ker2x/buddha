@@ -29,7 +29,16 @@
 #ifndef CONTROLWINDOW_H
 #define CONTROLWINDOW_H
 
+#include <QtWidgets/QSlider>
+#include <QtWidgets/QRadioButton>
+#include <QtWidgets/QMenuBar>
+#include <QtWidgets/QPushButton>
+#include <QtWidgets/QGroupBox>
+#include <QtWidgets/QDoubleSpinBox>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QAbstractSpinBox>
 #include <QtCore/QVariant>
+#include <QtWidgets/QMainWindow>
 #include <QtGui/QtGui>
 #include "renderWindow.h"
 #include "buddha.h"
@@ -54,14 +63,14 @@ public:
 	static const double maxScale = 1.34217728E+8 * 128.0;
 	static const double step = 0.001;
 
-	uint lowr, lowg, lowb;
+    uint lowr, lowg, lowb;
 	uint highr, highg, highb;
-        int contrast, lightness;
+    int contrast, lightness;
 	double fps;
-        double cre, cim;
+    double cre, cim;
 	double scale;
 	Buddha* b;
-	Options* options;
+    //Options* options;
 
 
 	
@@ -94,15 +103,15 @@ public:
 	QLabel *zoomLabel;
 	QDoubleSpinBox *zoomBox;
 	QLabel *iterationGreenLabel;
-        QLabel *iterationBlueLabel;
+    QLabel *iterationBlueLabel;
 
 
-        QSpinBox *minRbox;
-        QSpinBox *maxRbox;
-        QSpinBox *minGbox;
-        QSpinBox *maxGbox;
-        QSpinBox *minBbox;
-        QSpinBox *maxBbox;
+    QSpinBox *minRbox;
+    QSpinBox *maxRbox;
+    QSpinBox *minGbox;
+    QSpinBox *maxGbox;
+    QSpinBox *minBbox;
+    QSpinBox *maxBbox;
 
 	QGroupBox *renderBox;
 	QLabel *contrastLabel;
@@ -170,13 +179,11 @@ public slots:
 	void setThreadNum ( int value );
 	void about ( );
 	void saveScreenshot( );
-	void saveConfig( );
-	void openConfig( );
 	void sendValues( bool pause = true );
 
 signals:
 	void closed ( );
-        void setValues( double cre, double cim, double scale, uint lowr, uint lowg, uint lowb, uint highr, uint highg, uint highb, QSize wsize, bool pause );
+    void setValues( double cre, double cim, double scale, uint lowr, uint lowg, uint lowb, uint highr, uint highg, uint highb, QSize wsize, bool pause );
 	void startCalculation( );
 	void stopCalculation( );
 	void pauseCalculation( );

@@ -1,4 +1,6 @@
-# Buddha++
+# A fork of :
+
+## Buddha++
 ## A Qt-based, multi-threaded BuddhaBrot navigator
 
 The program as a number of features:

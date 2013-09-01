@@ -30,9 +30,9 @@
 #define RENDERWINDOW_H
 
 
-#include <QMainWindow>
-#include <QWidget>
-#include <QStatusBar>
+//#include <QMainWindow>
+#include <QtWidgets/QWidget>
+//#include <QStatusBar>
 #include "buddha.h"
 
 

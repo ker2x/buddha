@@ -27,7 +27,10 @@
 
 
 #include "controlWindow.h"
-#include <QVBoxLayout>
+#include <QtWidgets/QVBoxLayout>
+#include <QtWidgets/QShortcut>
+#include <QtWidgets/QMessageBox>
+#include <QtWidgets/QFileDialog>
 #include <QtGui>
 #include <iostream>
 
@@ -38,6 +41,14 @@ ControlWindow::ControlWindow ( ) {
 	b = new Buddha( );
 	icon = new QIcon( "resources/icon.png" );
 	setWindowIcon( *icon );
+
+    cre = cim = 0.0;
+    lowr = 50;
+    highr = 100;
+    lowg = 75;
+    highg = 125;
+    lowb = 100;
+    highb = 150;
 
 	centralWidget = new QWidget( this );
 	createGraphBox();
@@ -58,12 +69,12 @@ ControlWindow::ControlWindow ( ) {
 
 	resize( 600, 400 );
 
-        connect(minRbox, SIGNAL(valueChanged(int)), this, SLOT(setMinRIteration(int)));
-        connect(minGbox, SIGNAL(valueChanged(int)), this, SLOT(setMinGIteration(int)));
-        connect(minBbox, SIGNAL(valueChanged(int)), this, SLOT(setMinBIteration(int)));
-        connect(maxRbox, SIGNAL(valueChanged(int)), this, SLOT(setMaxRIteration(int)));
-        connect(maxGbox, SIGNAL(valueChanged(int)), this, SLOT(setMaxGIteration(int)));
-        connect(maxBbox, SIGNAL(valueChanged(int)), this, SLOT(setMaxBIteration(int)));
+    connect(minRbox, SIGNAL(valueChanged(int)), this, SLOT(setMinRIteration(int)));
+    connect(minGbox, SIGNAL(valueChanged(int)), this, SLOT(setMinGIteration(int)));
+    connect(minBbox, SIGNAL(valueChanged(int)), this, SLOT(setMinBIteration(int)));
+    connect(maxRbox, SIGNAL(valueChanged(int)), this, SLOT(setMaxRIteration(int)));
+    connect(maxGbox, SIGNAL(valueChanged(int)), this, SLOT(setMaxGIteration(int)));
+    connect(maxBbox, SIGNAL(valueChanged(int)), this, SLOT(setMaxBIteration(int)));
 
 	connect( reBox, SIGNAL( valueChanged( double ) ), this, SLOT( setCre( double ) ) );
 	connect( imBox, SIGNAL( valueChanged( double ) ), this, SLOT( setCim( double ) ) );
@@ -111,6 +122,7 @@ ControlWindow::ControlWindow ( ) {
 
 void ControlWindow::createGraphBox ( ) {
 	graphBox = new QGroupBox( tr( "Graph quality" ), this );
+
 	
 	iterationRedLabel = new QLabel( "Red iteration min/max:", graphBox );
         minRbox = new QSpinBox(graphBox);
@@ -228,24 +240,31 @@ void ControlWindow::createGraphBox ( ) {
 
 
 void ControlWindow::createRenderBox ( ) {
+
+    lightness = 100;
+    contrast = 100;
+    fps = 2;
 	renderBox = new QGroupBox( "Render quality", this );
 	
 	contrastLabel = new QLabel( "Contrast:", renderBox );
 	contrastSlider = new QSlider( renderBox );
 	contrastSlider->setMaximum( maxContrast );
 	contrastSlider->setOrientation(Qt::Horizontal);
+    b->setContrast(contrast);
 	
 	lightLabel = new QLabel( "Lightness:", renderBox );
 	lightSlider = new QSlider( renderBox );
 	lightSlider->setMaximum( maxLightness );
 	lightSlider->setOrientation(Qt::Horizontal);
-	
+    b->setLightness(lightness);
+
 	fpsLabel = new QLabel( "Frames per second:", renderBox );
 	fpsSlider = new QSlider( renderBox );
 	fpsSlider->setMinimum( 0 );
 	fpsSlider->setMaximum( maxFps );
 	fpsSlider->setOrientation(Qt::Horizontal);
-	
+    //this->setFps(fps);
+
 	threadsLabel = new QLabel( "Threads:", renderBox );
 	threadsSlider = new QSlider( renderBox );
 	threadsSlider->setMinimum( 1 );
@@ -286,7 +305,8 @@ void ControlWindow::createActions ( ) {
 	connect(screenShotAct, SIGNAL(triggered()), this, SLOT(saveScreenshot()));
 	connect( this, SIGNAL(screenshotRequest( QString ) ), b, SLOT( saveScreenshot(QString) ) );
 
-	saveAct = new QAction( "Save Configuration", this );
+/*
+    saveAct = new QAction( "Save Configuration", this );
 	saveAct->setShortcut( tr( "Alt+Ctrl+S" ) );
 	saveAct->setIcon( screenShotAct->icon() );
 	connect(saveAct, SIGNAL(triggered()), this, SLOT(saveConfig()));
@@ -295,15 +315,15 @@ void ControlWindow::createActions ( ) {
 	openAct->setShortcut( tr( "Alt+Ctrl+O" ) );
 	openAct->setIcon( QIcon("resources/open.png") );
 	connect(openAct, SIGNAL(triggered()), this, SLOT(openConfig()));
-
+*/
 }
 
 void ControlWindow::createMenus ( ) {
 	createActions( );
 	menuBar = new QMenuBar( this );
 	fileMenu = new QMenu(tr("&File"), menuBar );
-	fileMenu->addAction(openAct);
-	fileMenu->addAction(saveAct);
+//	fileMenu->addAction(openAct);
+//	fileMenu->addAction(saveAct);
 	fileMenu->addAction(screenShotAct);
 	fileMenu->addSeparator();
 	fileMenu->addAction(exitAct);
@@ -424,9 +444,9 @@ void ControlWindow::modelToGUI ( ) {
 	zoomBox->setValue( scale );
 
 	// why?
-	setCre( cre );
-	setCim( cim );
-	setScale( scale );
+    setCre( cre );
+    setCim( cim );
+    setScale( scale );
 }
 
 
@@ -442,7 +462,7 @@ void ControlWindow::modelToGUI ( ) {
 // FUNCTIONS FOR THE INPUT WIDGETS
 
 void ControlWindow::updateFpsLabel( ) {
-	fpsLabel->setText( "Frames per second: [" + QString::number( fps, 'f', 1 ) + "]" );
+    fpsLabel->setText( "Frames per second: [" + QString::number( fps, 'f', 1 ) + "]" );
 }
 
 void ControlWindow::updateThreadLabel( quint8 value ) {
@@ -478,11 +498,14 @@ void ControlWindow::setLightness ( int value ) {
         lightness = value;
 	//b->setLightness( (double) value / ( lightSlider->maximum() - value + 1 ) );
 	//qDebug() <<"Lightness: %d %lf\n", value,(double) value / ( lightSlider->maximum() - value ) );
+    lightLabel->setText( "Lightness [" + QString::number( lightness, 'd', 1 ) + "]" );
+
 	b->setLightness( value );
 }
 
 void ControlWindow::setContrast ( int value ) {
         contrast = value;
+        contrastLabel->setText( "Contrast: [" + QString::number( contrast, 'd', 1 ) + "]" );
 	// ottengo un valore fra 0.0 e 2.0
 	//b->setContrast( (double) value / contrastSlider->maximum() * 2.0 );
 	b->setContrast( value );
@@ -603,22 +626,3 @@ void ControlWindow::saveScreenshot ( ) {
 
 
 
-
-
-
-// TODO these functions are completely to review
-void ControlWindow::saveConfig ( ) {
-	QString name = "[" + QString::number( this->cre ) + ", " + QString::number(cim ) + "].xml";
-	QString fileName = QFileDialog::getSaveFileName( this, tr("Save Current Config"), "./" + name,
-			   tr("Buddha++ Files (*.xml)") );
-
-	this->options->save( fileName.toStdString() );
-}
-
-
-void ControlWindow::openConfig ( ) {
-	QString fileName = QFileDialog::getOpenFileName( this, tr("Open"),
-			   "./", tr("Buddha++ Files (*.xml)") );
-
-
-}

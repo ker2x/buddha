@@ -283,7 +283,7 @@ void RenderWindow::zoom ( double factor, int cutdx, int cutdy ) {
 	parent->setCre( b->cre + newCentre.x() / b->scale );
 	parent->setCim( b->cim - newCentre.y() / b->scale );
 	parent->setScale( b->scale * factor );
-	parent->modelToGUI();
+    parent->modelToGUI();
 }
 
 /*bool RenderWindow::valuesChanged ( ) {
