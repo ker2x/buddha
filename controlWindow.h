@@ -55,10 +55,10 @@ class ControlWindow : public QMainWindow {
 	Q_OBJECT
 
 public:
-	static const double minRe = -2.0;
+    static const double minRe = -1.0;
 	static const double maxRe = 2.0;
-	static const double minIm = -2.0;
-	static const double maxIm = 2.0;
+    static const double minIm = -1.3;
+    static const double maxIm = 1.3;
 	static const double minScale = 100; //should start at 1, not 100 as the contrast/lightness
 	static const double maxScale = 1.34217728E+8 * 128.0;
 	static const double step = 0.001;

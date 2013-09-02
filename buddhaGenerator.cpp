@@ -191,6 +191,7 @@ int BuddhaGenerator::inside ( buddha::complex& c ) {
 // this is the main function. Here little modifications impacts a lot on the speed of the program!
 int BuddhaGenerator::evaluate ( buddha::complex& begin, double& centerDistance,
 				unsigned int& contribute, unsigned int& calculated ) {
+
 	buddha::complex last = begin;	// holds the last calculated point
 	buddha::complex critical = last;// for periodicity check
 	unsigned int j = 0, criticalStep = STEP;
@@ -198,6 +199,24 @@ int BuddhaGenerator::evaluate ( buddha::complex& begin, double& centerDistance,
 	bool isInside;
 	centerDistance = 64.0;
 	contribute = 0;
+    double cr = begin.re;
+    double ci = begin.im;
+    double ci2 = ci*ci;
+
+    //Quick rejection check if c is in 2nd order period bulb
+     if( (cr+1.0) * (cr+1.0) + ci2 < 0.0625) return -1;
+
+     //Quick rejection check if c is in main cardioid
+     double q = (cr-0.25)*(cr-0.25) + ci2;
+     if( q*(q+(cr-0.25)) < 0.25*ci2) return -1;
+
+
+     // test for the smaller bulb left of the period-2 bulb
+     if (( ((cr+1.309)*(cr+1.309)) + ci*ci) < 0.00345) return -1;
+
+     // check for the smaller bulbs on top and bottom of the cardioid
+     if ((((cr+0.125)*(cr+0.125)) + (ci-0.744)*(ci-0.744)) < 0.0088) return -1;
+     if ((((cr+0.125)*(cr+0.125)) + (ci+0.744)*(ci+0.744)) < 0.0088) return -1;
 
 	for ( unsigned int i = 0; i < b->high; ++i ) {
 		// when low <= i < high the points are saved for drawing
