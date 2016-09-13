@@ -166,8 +166,8 @@ void RenderWindow::mouseReleaseEvent(QMouseEvent *event) {
       		if ( endMouse.y() > size().height() ) endMouse.setY( size().height() );
 		
 		// calcolo il nuovo zoom
-		double scalex = (double) width() / fabs( ( endMouse - begMouse ).x() );
-		double scaley = (double) height() / fabs( ( endMouse - begMouse ).y() );
+        double scalex = (double) width() / fabs( (double)( endMouse - begMouse ).x() );
+        double scaley = (double) height() / fabs( (double)( endMouse - begMouse ).y() );
 		double scale = min( scalex, scaley );
 		
 		int dx = 0.5 * ( endMouse.x() + begMouse.x() - width() );
@@ -177,7 +177,7 @@ void RenderWindow::mouseReleaseEvent(QMouseEvent *event) {
 		// TODO ugly, this has been just set in the previous call
 		//parent->putValues( b->cre + dx / b->scale, b->cim - dy / b->scale, parent->getScale() );
 		parent->setCre( b->cre + dx / b->scale );
-		parent->setCim( b->cim + dy / b->scale );
+        parent->setCim( b->cim - dy / b->scale );
 		parent->modelToGUI();
 		parent->sendValues( true );
 		disabledDrawing = true;
