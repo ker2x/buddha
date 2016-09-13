@@ -59,7 +59,7 @@ public:
      const double maxRe = 2.0;
      const double minIm = -1.3;
      const double maxIm = 1.3;
-     const double minScale = 100; //should start at 1, not 100 as the contrast/lightness
+     const double minScale = 200; //should start at 1, not 100 as the contrast/lightness
      const double maxScale = 1.34217728E+8 * 128.0;
      const double step = 0.001;
 

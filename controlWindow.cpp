@@ -43,12 +43,12 @@ ControlWindow::ControlWindow ( ) {
 	setWindowIcon( *icon );
 
     cre = cim = 0.0;
-    lowr = 50;
-    highr = 100;
-    lowg = 75;
-    highg = 125;
-    lowb = 100;
-    highb = 150;
+    lowr = 500;
+    highr = 1000;
+    lowg = 750;
+    highg = 1250;
+    lowb = 1000;
+    highb = 1500;
 
 	centralWidget = new QWidget( this );
 	createGraphBox();

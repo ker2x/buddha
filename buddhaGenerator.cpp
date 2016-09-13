@@ -156,10 +156,10 @@ void BuddhaGenerator::drawPoint ( buddha::complex& c, bool drawr, bool drawg, bo
 	#define plotIm( c, drawr, drawg, drawb ) \
 	if ( c.im > b->minim && c.im < b->maxim ) { \
 		y = ( b->maxim - c.im ) * b->scale; \
-		if ( drawb )	raw[ y * 3 * b->w + 3 * x + 2 ]++;	\
 		if ( drawr )	raw[ y * 3 * b->w + 3 * x + 0 ]++;	\
 		if ( drawg )	raw[ y * 3 * b->w + 3 * x + 1 ]++;	\
-	}
+        if ( drawb )	raw[ y * 3 * b->w + 3 * x + 2 ]++;	\
+    }
 	
 	if ( c.re < b->minre ) return;
 	if ( c.re > b->maxre ) return;
@@ -171,8 +171,10 @@ void BuddhaGenerator::drawPoint ( buddha::complex& c, bool drawr, bool drawg, bo
 	// respect of the real axis (re = 0). So I draw always also the simmetric point (I try).
 	plotIm( c, drawr, drawg, drawb );
 	
-	c.im = -c.im;
-	plotIm( c, drawr, drawg, drawb );
+    // Since we actually pretty much never benefit from it (deep zoom), i decide to forget it.
+    //Should be an option
+    c.im = -c.im;
+    plotIm( c, drawr, drawg, drawb );
 }
 
 
@@ -194,6 +196,7 @@ int BuddhaGenerator::evaluate ( buddha::complex& begin, double& centerDistance,
 
 	buddha::complex last = begin;	// holds the last calculated point
 	buddha::complex critical = last;// for periodicity check
+
 	unsigned int j = 0, criticalStep = STEP;
 	double tmp = 64.0;
 	bool isInside;
@@ -202,14 +205,13 @@ int BuddhaGenerator::evaluate ( buddha::complex& begin, double& centerDistance,
     double cr = begin.re;
     double ci = begin.im;
     double ci2 = ci*ci;
+    double q = (cr-0.25)*(cr-0.25) + ci2;
+
+    //Quick rejection check if c is in main cardioid
+    if( q*(q+(cr-0.25)) < 0.25*ci2) return -1;
 
     //Quick rejection check if c is in 2nd order period bulb
      if( (cr+1.0) * (cr+1.0) + ci2 < 0.0625) return -1;
-
-     //Quick rejection check if c is in main cardioid
-     double q = (cr-0.25)*(cr-0.25) + ci2;
-     if( q*(q+(cr-0.25)) < 0.25*ci2) return -1;
-
 
      // test for the smaller bulb left of the period-2 bulb
      if (( ((cr+1.309)*(cr+1.309)) + ci*ci) < 0.00345) return -1;
@@ -254,14 +256,14 @@ int BuddhaGenerator::evaluate ( buddha::complex& begin, double& centerDistance,
 			// if I found that two calculated points are very very close I conclude that
 			// they are the same point, so the sequence is periodic so we are computing a point
 			// in the mandelbrot, so I stop the calculation
-			if ( tmp < FLT_EPSILON * FLT_EPSILON ) { // maybe also DBL_EPSILON is sufficient
-				calculated = i;
-				return -1;
-			}
+            if ( tmp < FLT_EPSILON * FLT_EPSILON ) { // maybe also DBL_EPSILON is sufficient
+                calculated = i;
+                return -1;
+            }
 
 			// I don't do this step at every iteration to be more fast, I found that a very good
 			// compromise is to use a multiplicative distance between each check
-			if ( i == criticalStep * 2 ) {
+            if ( i == criticalStep * 2 ) {
 				criticalStep *= 2;
 				critical = last;
 			}
@@ -274,7 +276,7 @@ int BuddhaGenerator::evaluate ( buddha::complex& begin, double& centerDistance,
 	}
 	
 	calculated = b->high;
-	return -1;
+    return -1;
 }
 
 
@@ -304,7 +306,7 @@ int BuddhaGenerator::findPoint ( buddha::complex& begin, double& centerDistance,
 	buddha::complex tmp = begin;
 
 	// 64 - 512
-        #define FINDPOINTMAX 	256
+    #define FINDPOINTMAX 	256
 	
 	calculated = 0;
 	do {
@@ -392,7 +394,7 @@ int BuddhaGenerator::metropolis ( ) {
 		
 		total += calculated;
 
-		locker.relock();
+        locker.relock();
 		// draw the points
 		for ( int h = 0; h <= proposedOrbitMax - (int) b->low && proposedOrbitCount > 0; h++ ) {
 			unsigned int i = h + b->low;

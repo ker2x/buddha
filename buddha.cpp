@@ -71,14 +71,14 @@ Buddha::Buddha( QObject *parent ) : QThread( parent ) {
 void Buddha::setLightness ( int lightness ) {
 	//mutex.lock();
 	this->lightness = lightness;
-        realLightness = (float) lightness / ( maxLightness - lightness + 1 );
+    realLightness = (float) lightness / ( maxLightness - lightness + 1 );
 	//mutex.unlock();
 }
 
 void Buddha::setContrast ( int contrast ) {
 	//mutex.lock();
 	this->contrast = contrast;
-        realContrast = (float) contrast / maxContrast * 2.0;
+    realContrast = (float) contrast / maxContrast * 2.0;
 	//mutex.unlock();
 }
 
@@ -240,14 +240,14 @@ void Buddha::set( double re, double im, double s, uint lr, uint lg, uint lb, uin
 	maxre = cre + rangere * 0.5;
 	minim = cim - rangeim * 0.5;
 	maxim = cim + rangeim * 0.5;
-        lowr = lr;
-        lowg = lg;
-        lowb = lb;
-        highr = hr;
-        highg = hg;
-        highb = hb;
+    lowr = lr;
+    lowg = lg;
+    lowb = lb;
+    highr = hr;
+    highg = hg;
+    highb = hb;
 	high = max( max( highr, highg ), highb );
-        low = min( min(lowr, lowg), lowb);
+    low = min( min(lowr, lowg), lowb);
 	resizeSequences( );
 	//status = RUN;
 	
